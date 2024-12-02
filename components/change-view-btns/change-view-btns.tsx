@@ -3,6 +3,8 @@ import { Button, useTheme, Text } from 'react-native-paper';
 
 import { BTNS_TITLES, RenderType } from '../controls/const';
 
+import { useAppSelector } from '@/redux/store';
+
 export default function ChangeViewBtns({
   renderType,
   setRenderType,
@@ -14,7 +16,7 @@ export default function ChangeViewBtns({
     colors: { background, primary },
   } = useTheme();
   const { width } = useWindowDimensions();
-
+  const { language } = useAppSelector(({ language }) => language);
   const calculatedWidthOfBtn = (width - 72) / 2;
   return (
     <View style={{ display: 'flex', flexDirection: 'row', columnGap: 10 }}>
@@ -33,7 +35,7 @@ export default function ChangeViewBtns({
             onPress={() => setRenderType(key)}
             mode={mode}>
             <Text variant="bodyLarge" style={{ color }}>
-              {title}
+              {title[language].value}
             </Text>
           </Button>
         );

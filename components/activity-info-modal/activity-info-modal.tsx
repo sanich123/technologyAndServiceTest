@@ -1,30 +1,25 @@
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
-import { RefObject, useCallback } from 'react';
+import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Button, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 
+import ActionBtns from '../action-btns/action-btns';
+import ActivityMetrics from '../activity-metrics/activity-metrics';
 import ErrorComponent from '../error-component/error-component';
 
+import { METRICS_TITLES } from '@/constants/enums';
+import { ActivityModalProps } from '@/constants/types';
+import { useAppSelector } from '@/redux/store';
 import { useGetActivityByActivityIdQuery } from '@/redux/tracking-api';
 import { formatDistance, formatDuration, getFormattedDate, getSpeedInKmHours } from '@/utils/locations';
 
-export default function ActivityInfoModal({
-  activityInfoModalRef,
-  activityId,
-  start,
-  finish,
-}: {
-  activityInfoModalRef: RefObject<BottomSheetModal>;
-  activityId: string;
-  start: string;
-  finish: string;
-}) {
+export default function ActivityInfoModal({ activityInfoModalRef, activityId, start, finish }: ActivityModalProps) {
   const renderBackdrop = useCallback(
     (props: any) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
     [],
   );
   const {
-    colors: { onSecondary, primary, background },
+    colors: { onSecondary, primary },
   } = useTheme();
   const {
     data: activity,
@@ -34,6 +29,7 @@ export default function ActivityInfoModal({
     error,
     refetch,
   } = useGetActivityByActivityIdQuery(activityId, { skip: !activityId });
+  const { language } = useAppSelector(({ language }) => language);
 
   return (
     <BottomSheetModal
@@ -50,47 +46,18 @@ export default function ActivityInfoModal({
       <BottomSheetView style={[{ flex: 1, padding: 10, backgroundColor: onSecondary }]}>
         {isSuccess && (
           <View style={{ marginHorizontal: 15 }}>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderBottomWidth: 1,
-                borderBottomColor: '#DADADA',
-                paddingVertical: 15,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Roboto',
-                  fontWeight: 700,
-                  fontSize: 18,
-                }}>{`${getFormattedDate(activity?.date)}, ${start} - ${finish}`}</Text>
+            <View style={styles.layout}>
+              <Text style={styles.boldText}>{`${getFormattedDate(activity?.date)}, ${start} - ${finish}`}</Text>
             </View>
-            <View style={{ paddingVertical: 15, display: 'flex', rowGap: 15 }}>
-              <View style={styles.rowLayout}>
-                <Text style={{ ...styles.title, fontSize: 16 }}>Продолжительность</Text>
-                <Text style={{ ...styles.title, ...styles.value }}>{formatDuration(activity?.duration)}</Text>
-              </View>
-              <View style={styles.rowLayout}>
-                <Text style={{ ...styles.title, fontSize: 16 }}>Расстояние</Text>
-                <Text style={{ ...styles.title, ...styles.value }}>{formatDistance(activity?.distance)}</Text>
-              </View>
-              <View style={styles.rowLayout}>
-                <Text style={{ ...styles.title, fontSize: 16 }}>Средняя скорость</Text>
-                <Text
-                  style={{
-                    ...styles.title,
-                    ...styles.value,
-                  }}>{`${getSpeedInKmHours(activity?.duration, activity?.distance)}`}</Text>
-              </View>
+            <View style={styles.metricsLayout}>
+              <ActivityMetrics title={METRICS_TITLES[language].duration} value={formatDuration(activity?.duration)} />
+              <ActivityMetrics title={METRICS_TITLES[language].distance} value={formatDistance(activity?.distance)} />
+              <ActivityMetrics
+                title={METRICS_TITLES[language].speed}
+                value={`${getSpeedInKmHours(activity?.duration, activity?.distance)}`}
+              />
             </View>
-            <View style={{ ...styles.rowLayout, marginTop: 40, columnGap: 10 }}>
-              <Button mode="outlined" style={{ borderWidth: 1, borderColor: primary, borderRadius: 10, width: '50%' }}>
-                <Text style={{ ...styles.title, fontSize: 14, color: primary }}>Написать</Text>
-              </Button>
-              <Button mode="contained" style={{ borderRadius: 10, width: '50%' }}>
-                <Text style={{ ...styles.title, fontSize: 14, color: background }}>Позвонить</Text>
-              </Button>
-            </View>
+            <ActionBtns />
           </View>
         )}
         {isLoading && <ActivityIndicator size="large" />}
@@ -101,6 +68,19 @@ export default function ActivityInfoModal({
 }
 
 const styles = StyleSheet.create({
+  layout: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#DADADA',
+    paddingVertical: 15,
+  },
+  boldText: {
+    fontFamily: 'Roboto',
+    fontWeight: 700,
+    fontSize: 18,
+  },
+  metricsLayout: { paddingVertical: 15, display: 'flex', rowGap: 15 },
   handleStyles: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -110,10 +90,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Roboto',
     fontWeight: 500,
-  },
-  value: {
-    fontSize: 14,
-    color: '#828282',
   },
   rowLayout: {
     display: 'flex',

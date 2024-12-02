@@ -2,7 +2,9 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { TouchableRipple, useTheme, Text } from 'react-native-paper';
 
+import { Languages } from '@/constants/enums';
 import { ActivityListItemProps } from '@/constants/types';
+import { useAppSelector } from '@/redux/store';
 import { formatDistance } from '@/utils/locations';
 
 export default function ActivityListItem({ date, id, start, end, distance }: ActivityListItemProps) {
@@ -10,12 +12,15 @@ export default function ActivityListItem({ date, id, start, end, distance }: Act
     colors: { primary, background },
   } = useTheme();
   const { push } = useRouter();
+  const { language } = useAppSelector(({ language }) => language);
+  const isRussian = language === Languages.russian;
+
   return (
     <TouchableRipple onPress={() => push(`/user/activity?activityId=${id}`)}>
       <View style={{ display: 'flex' }}>
         <View style={{ padding: 15, backgroundColor: background }}>
           <Text style={{ ...styles.fontStyles, fontSize: 16 }}>
-            {new Date(date).toLocaleDateString('ru', { day: 'numeric', month: 'long' })}
+            {new Date(date).toLocaleDateString(isRussian ? 'ru' : 'en', { day: 'numeric', month: 'long' })}
           </Text>
         </View>
 

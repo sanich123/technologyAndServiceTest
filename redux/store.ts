@@ -4,18 +4,18 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 
-import tasks from './tasks/tasks';
+import language from './language/language';
 import { trackingApi } from './tracking-api';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['tasks'],
+  whitelist: ['language'],
 };
 
 const rootReducer = persistReducer(
   persistConfig,
-  combineReducers({ tasks, [trackingApi.reducerPath]: trackingApi.reducer }),
+  combineReducers({ language, [trackingApi.reducerPath]: trackingApi.reducer }),
 );
 
 export const store = configureStore({

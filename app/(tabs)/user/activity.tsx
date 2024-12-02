@@ -16,11 +16,13 @@ export default function DisplayActivity() {
     skip: !activityId,
   });
   const activityInfoModalRef = useRef<BottomSheetModal>(null);
+
   useEffect(() => {
     if (isSuccess) {
-      activityInfoModalRef?.current?.present();
+      setTimeout(() => activityInfoModalRef?.current?.present(), 1000);
     }
   }, [isSuccess]);
+
   const { colors } = useTheme();
   return (
     <BottomSheetModalProvider>

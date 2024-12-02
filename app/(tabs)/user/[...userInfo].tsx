@@ -10,7 +10,7 @@ import { normalizeLocations } from '@/utils/locations';
 export default function UserTrackingList() {
   const { id, name } = useGlobalSearchParams();
   const { data, isSuccess, isError, isLoading, refetch, error } = useGetActivitiesByUserIdQuery(
-    { id: `${id}`, page: 0, take: 10 },
+    { id: `${id}`, page: 0, take: 20 },
     { skip: !id },
   );
   return (
