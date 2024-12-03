@@ -10,14 +10,14 @@ import { normalizeLocations } from '@/utils/locations';
 export default function UserTrackingList() {
   const { id, name } = useGlobalSearchParams();
   const { data, isSuccess, isError, isLoading, refetch, error } = useGetActivitiesByUserIdQuery(
-    { id: `${id}`, page: 0, take: 20 },
+    { id: `${id}`, page: 0, take: 12 },
     { skip: !id },
   );
   return (
     <View style={[{ flex: 1 }, (isLoading || isError || !data?.activities.length) && styles.centeredLayout]}>
       {isLoading && <ActivityIndicator size="large" />}
       {isError && <ErrorComponent refetch={refetch} error={error} />}
-      {isSuccess && (
+      {isSuccess && data?.activities.length && (
         <FlatList
           data={normalizeLocations({ activities: data?.activities })}
           renderItem={({
@@ -28,7 +28,11 @@ export default function UserTrackingList() {
               locations: { start, end },
             },
           }) => <ActivityListItem date={date} id={id} start={start} end={end} distance={distance} />}
-          ListEmptyComponent={<Text variant="bodyLarge">{`${name} ещё никуда не ходил`}</Text>}
+          ListEmptyComponent={
+            <View>
+              <Text variant="bodyLarge">{`${name} ещё никуда не ходил`}</Text>
+            </View>
+          }
         />
       )}
     </View>
