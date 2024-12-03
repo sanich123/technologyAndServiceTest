@@ -5,7 +5,7 @@ export const USERS = [
     surname: 'Ын',
     middleName: 'Чен',
     position: 'Генеральный секретарь',
-    phone: '+79263892919',
+    phone: '+79263878217',
     lastSeen: {
       latitude: 54.992868,
       longitude: 73.355515,

@@ -19,7 +19,9 @@ export default function ActionBtns({ phone }: { phone: string }) {
         style={{ borderWidth: 1, borderColor: primary, borderRadius: 10, width: '49%' }}
         onPress={async () => {
           try {
-            Linking.openURL(`http://api.whatsapp.com/send?phone=${phone}`);
+            Linking.openURL(
+              `http://api.whatsapp.com/send?phone=${phone}?text=${'Добрый день, подскажите пожалуйста, какой номер обращения у вас сейчас в работе?'}`,
+            );
           } catch (error) {
             console.log(`Возможно на вашем телефона не установлено приложение Whatsapp, ${JSON.stringify(error)}`);
           }
