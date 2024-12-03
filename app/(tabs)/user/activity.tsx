@@ -17,12 +17,6 @@ export default function DisplayActivity() {
   });
   const activityInfoModalRef = useRef<BottomSheetModal>(null);
 
-  useEffect(() => {
-    if (isSuccess) {
-      setTimeout(() => activityInfoModalRef?.current?.present(), 1000);
-    }
-  }, [isSuccess]);
-
   const { colors } = useTheme();
   return (
     <BottomSheetModalProvider>
@@ -37,14 +31,12 @@ export default function DisplayActivity() {
           onPress={() => activityInfoModalRef?.current?.present()}
         />
       </View>
-      {isSuccess && data?.locations.length > 1 && (
-        <ActivityInfoModal
-          activityInfoModalRef={activityInfoModalRef}
-          activityId={`${activityId}`}
-          start={formatDateFromTimestamp(data?.locations[0].timestamp)}
-          finish={formatDateFromTimestamp(data?.locations[data?.locations.length - 1].timestamp)}
-        />
-      )}
+      <ActivityInfoModal
+        activityInfoModalRef={activityInfoModalRef}
+        activityId={`${activityId}`}
+        start={formatDateFromTimestamp(data?.locations[0].timestamp)}
+        finish={formatDateFromTimestamp(data?.locations[data?.locations.length - 1].timestamp)}
+      />
     </BottomSheetModalProvider>
   );
 }

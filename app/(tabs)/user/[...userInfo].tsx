@@ -17,7 +17,7 @@ export default function UserTrackingList() {
     <View style={[{ flex: 1 }, (isLoading || isError || !data?.activities.length) && styles.centeredLayout]}>
       {isLoading && <ActivityIndicator size="large" />}
       {isError && <ErrorComponent refetch={refetch} error={error} />}
-      {isSuccess && data?.activities.length && (
+      {isSuccess && (
         <FlatList
           data={normalizeLocations({ activities: data?.activities })}
           renderItem={({
