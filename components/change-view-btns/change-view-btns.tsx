@@ -1,17 +1,12 @@
 import { useWindowDimensions, View } from 'react-native';
 import { Button, useTheme, Text } from 'react-native-paper';
 
-import { BTNS_TITLES, RenderType } from '../controls/const';
+import { ChangeViewBtnsProps } from './types';
+import { BTNS_TITLES } from '../controls/const';
 
 import { useAppSelector } from '@/redux/store';
 
-export default function ChangeViewBtns({
-  renderType,
-  setRenderType,
-}: {
-  renderType: RenderType;
-  setRenderType: (arg: RenderType) => void;
-}) {
+export default function ChangeViewBtns({ renderType, setRenderType }: ChangeViewBtnsProps) {
   const {
     colors: { background, primary },
   } = useTheme();

@@ -9,7 +9,7 @@ export default function ListItem({ surname, name, middleName, position, phone, i
   const { push } = useRouter();
   const nameWithDots = `${surname} ${name[0].toUpperCase()}. ${middleName[0].toUpperCase()}.`;
   return (
-    <TouchableRipple onPress={() => push(`/user/?name=${nameWithDots}&id=${id}` as Href)}>
+    <TouchableRipple onPress={() => push(`/user/?name=${nameWithDots}&id=${id}&phone=${phone}` as Href)}>
       <View style={{ padding: 15, display: 'flex', rowGap: 5, borderBottomWidth: 1, borderBottomColor: '#E2E2E2' }}>
         <Text
           style={{ fontFamily: 'Roboto', fontWeight: 500, fontSize: 16 }}>{`${surname} ${name} ${middleName}`}</Text>

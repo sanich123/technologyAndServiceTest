@@ -37,8 +37,8 @@ export default function Map({ filteredUsers }: { filteredUsers: typeof USERS }) 
 
 const styles = StyleSheet.create({
   boundsPadding: {
-    paddingLeft: 60,
-    paddingRight: 60,
+    paddingLeft: 90,
+    paddingRight: 90,
     paddingTop: 30,
     paddingBottom: 30,
   },

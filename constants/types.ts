@@ -45,3 +45,8 @@ export interface ActivityModalProps {
   start: string;
   finish: string;
 }
+
+export interface CallMeModalProps {
+  callMeModalRef: RefObject<BottomSheetModal>;
+  phone: string;
+}

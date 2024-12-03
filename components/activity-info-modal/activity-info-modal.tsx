@@ -1,4 +1,5 @@
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { useGlobalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
@@ -30,7 +31,7 @@ export default function ActivityInfoModal({ activityInfoModalRef, activityId, st
     refetch,
   } = useGetActivityByActivityIdQuery(activityId, { skip: !activityId });
   const { language } = useAppSelector(({ language }) => language);
-
+  const { phone } = useGlobalSearchParams();
   return (
     <BottomSheetModal
       ref={activityInfoModalRef}
@@ -57,7 +58,7 @@ export default function ActivityInfoModal({ activityInfoModalRef, activityId, st
                 value={`${getSpeedInKmHours(activity?.duration, activity?.distance)}`}
               />
             </View>
-            <ActionBtns />
+            <ActionBtns phone={phone.toString()} />
           </View>
         )}
         {isLoading && <ActivityIndicator size="large" />}

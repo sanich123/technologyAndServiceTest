@@ -16,7 +16,7 @@ export default function ActivityListItem({ date, id, start, end, distance }: Act
   const isRussian = language === Languages.russian;
 
   return (
-    <TouchableRipple onPress={() => push(`/user/activity?activityId=${id}`)}>
+    <TouchableRipple onPress={() => push(`/user/activity?activityId=${id}`)} borderless>
       <View style={{ display: 'flex' }}>
         <View style={{ padding: 15, backgroundColor: background }}>
           <Text style={{ ...styles.fontStyles, fontSize: 16 }}>

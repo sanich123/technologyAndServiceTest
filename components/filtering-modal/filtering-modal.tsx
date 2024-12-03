@@ -1,17 +1,18 @@
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
-import { RefObject, useCallback } from 'react';
-import { FlatList, View } from 'react-native';
-import { Text, TouchableRipple, useTheme } from 'react-native-paper';
+import { Fragment, useCallback } from 'react';
+import { StyleSheet } from 'react-native';
+import { Divider, RadioButton, Text, TouchableRipple, useTheme } from 'react-native-paper';
+
+import { FilteringModalProps } from './types';
+import ResetFiltersBtn from '../reset-filters-btn/reset-filters-btn';
 
 import { USERS } from '@/constants/mocks';
 
 export default function FilteringModal({
   filteringModalRef,
   setFilterByPosition,
-}: {
-  filteringModalRef: RefObject<BottomSheetModal>;
-  setFilterByPosition: (arg: string) => void;
-}) {
+  filterByPosition,
+}: FilteringModalProps) {
   const renderBackdrop = useCallback(
     (props: any) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
     [],
@@ -19,6 +20,7 @@ export default function FilteringModal({
   const {
     colors: { onSecondary, primary },
   } = useTheme();
+
   return (
     <BottomSheetModal
       ref={filteringModalRef}
@@ -35,21 +37,39 @@ export default function FilteringModal({
       backgroundStyle={{ backgroundColor: onSecondary }}
       handleIndicatorStyle={{ backgroundColor: primary }}>
       <BottomSheetView style={{ flex: 1, padding: 10, backgroundColor: onSecondary }}>
-        <FlatList
-          data={[...new Set(USERS.map(({ position }) => position)), 'Сбросить фильтрацию']}
-          renderItem={({ item: position }) => (
+        {[...new Set(USERS.map(({ position }) => position))].map((position) => (
+          <Fragment key={position}>
             <TouchableRipple
+              borderless
+              style={styles.radioBtn}
               onPress={() => {
-                setFilterByPosition(position === 'Сбросить фильтрацию' ? '' : position);
-                filteringModalRef.current?.close();
+                if (filterByPosition.includes(position)) {
+                  setFilterByPosition(filterByPosition.filter((recentPosition) => position !== recentPosition));
+                } else {
+                  setFilterByPosition([...filterByPosition, position]);
+                }
               }}>
-              <View>
-                <Text variant="bodyLarge">{position}</Text>
-              </View>
+              <>
+                <Text variant="titleMedium">{position}</Text>
+                <RadioButton value={position} status={filterByPosition.includes(position) ? 'checked' : 'unchecked'} />
+              </>
             </TouchableRipple>
-          )}
-        />
+            <Divider />
+          </Fragment>
+        ))}
+        <ResetFiltersBtn setFilterByPosition={setFilterByPosition} />
       </BottomSheetView>
     </BottomSheetModal>
   );
 }
+
+const styles = StyleSheet.create({
+  radioBtn: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: 10,
+  },
+});

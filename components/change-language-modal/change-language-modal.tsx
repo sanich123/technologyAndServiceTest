@@ -9,7 +9,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 
 export default function ChangeLanguageModal({ languagesModalRef }: { languagesModalRef: RefObject<BottomSheetModal> }) {
   const { language } = useAppSelector(({ language }) => language);
-  const { colors, dark } = useTheme();
+  const {
+    colors: { onSecondary, primary },
+    dark,
+  } = useTheme();
   const [checked, setChecked] = useState(language);
   const dispatch = useAppDispatch();
   const renderBackdrop = useCallback(
@@ -20,20 +23,19 @@ export default function ChangeLanguageModal({ languagesModalRef }: { languagesMo
     <BottomSheetModal
       ref={languagesModalRef}
       index={0}
-      snapPoints={['20%']}
+      snapPoints={['25%']}
       backdropComponent={renderBackdrop}
-      handleStyle={{ backgroundColor: colors.onSecondary, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
-      backgroundStyle={{ backgroundColor: colors.onSecondary }}
-      handleIndicatorStyle={{ backgroundColor: colors.primary }}>
-      <BottomSheetView style={{ backgroundColor: colors.onSecondary }}>
+      handleStyle={{ backgroundColor: onSecondary, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+      backgroundStyle={{ backgroundColor: onSecondary }}
+      handleIndicatorStyle={{ backgroundColor: primary }}>
+      <BottomSheetView style={{ backgroundColor: onSecondary }}>
         <View>
           {LANGUAGES_ARRAY[language].values.map(({ value, title }) => (
             <Fragment key={title}>
               <Divider />
               <TouchableRipple
-                rippleColor={`rgba(${dark ? '255, 255, 255' : '0, 0, 0'}, .08)`}
                 borderless
-                style={{ ...styles.radioBtn }}
+                style={styles.radioBtn}
                 onPress={() => {
                   setChecked(value);
                   dispatch(changeLanguage(value));

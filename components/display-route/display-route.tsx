@@ -17,6 +17,8 @@ export default function DisplayRoute({ locations }: { locations: LocationObject[
     [locations],
   );
   const line = lineString(modifiedLocationsForTurf);
+
+  //Здесь получаем точки квадрата, в котором карта должна отобразиться
   const [minLat, minLng, maxLat, maxLng] = bbox(line);
   const startLongitude = locations[0]?.coords.longitude;
   const startLatitude = locations[0]?.coords.latitude;

@@ -1,24 +1,14 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { RefObject } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 
-import { RenderType } from './const';
+import { ControlsProps } from './types';
 import ChangeViewBtns from '../change-view-btns/change-view-btns';
 import SettingsBtn from '../settings-btn/settings-btn';
 
 import { Languages } from '@/constants/enums';
 import { useAppSelector } from '@/redux/store';
 
-export default function Controls({
-  renderType,
-  setRenderType,
-  filteringModalRef,
-}: {
-  renderType: RenderType;
-  setRenderType: (arg: RenderType) => void;
-  filteringModalRef: RefObject<BottomSheetModal>;
-}) {
+export default function Controls({ renderType, setRenderType, filteringModalRef }: ControlsProps) {
   const {
     colors: { background },
   } = useTheme();

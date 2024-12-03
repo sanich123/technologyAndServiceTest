@@ -12,8 +12,10 @@ import { USERS } from '@/constants/mocks';
 export default function HomeScreen() {
   const [renderType, setRenderType] = useState(RenderType.list);
   const filteringModalRef = useRef<BottomSheetModal>(null);
-  const [filterByPosition, setFilterByPosition] = useState('');
-  const filteredUsers = filterByPosition ? USERS.filter(({ position }) => position === filterByPosition) : USERS;
+  const [filterByPosition, setFilterByPosition] = useState<string[]>([]);
+  const filteredUsers = filterByPosition.length
+    ? USERS.filter(({ position }) => filterByPosition.includes(position))
+    : USERS;
   return (
     <BottomSheetModalProvider>
       <View style={{ flex: 1 }}>
@@ -37,7 +39,11 @@ export default function HomeScreen() {
           <Map filteredUsers={filteredUsers} />
         )}
       </View>
-      <FilteringModal filteringModalRef={filteringModalRef} setFilterByPosition={setFilterByPosition} />
+      <FilteringModal
+        filteringModalRef={filteringModalRef}
+        setFilterByPosition={setFilterByPosition}
+        filterByPosition={filterByPosition}
+      />
     </BottomSheetModalProvider>
   );
 }
